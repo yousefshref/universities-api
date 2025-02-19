@@ -20,8 +20,10 @@ from email.mime.multipart import MIMEMultipart
 
 
 def send_email(recipient_email, subject, body, smtp_server='smtp.gmail.com', smtp_port=587):
-    sender_email = 'yb2005at@gmail.com'
-    sender_password = 'hjnz kzla jvka nrpm'
+    # sender_email = 'yb2005at@gmail.com'
+    # sender_password = 'hjnz kzla jvka nrpm'
+    sender_email = 'mohmmad.k.bdeir@gmail.com'
+    sender_password = 'xyqb jdmg kiuq gyuf'
     try:
         # Create a MIMEText email
         msg = MIMEMultipart()
