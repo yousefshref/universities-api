@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -28,6 +29,9 @@ DEBUG = True
 ALLOWED_HOSTS = ["*"]
 
 
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
+
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -43,6 +47,8 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'corsheaders',
 ]
+
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
