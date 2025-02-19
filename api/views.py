@@ -174,9 +174,9 @@ class UniversityViewSet(viewsets.ModelViewSet):
             f"universities_list_page_{page_number}_"
             f"country_{country_param}_city_{city_param}_major_{major_param}"
         )
-        cached_data = cache.get(cache_key)
-        if cached_data:
-            return Response(cached_data)
+        # cached_data = cache.get(cache_key)
+        # if cached_data:
+        #     return Response(cached_data)
 
         queryset = self.get_queryset()
 
