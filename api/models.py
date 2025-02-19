@@ -123,38 +123,21 @@ class Review(models.Model):
 
 from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
-from django.core.cache import cache
+from django.db.models import Avg
 
 
-
-def clear_university_cache():
+@receiver(post_save, sender=Review)
+@receiver(post_delete, sender=Review)
+def update_university_rating(sender, instance, **kwargs):
     """
-    Deletes all cached university list pages.
+    Updates the university rating whenever a review is created or deleted.
     """
-    for key in cache._cache.keys():  # Get all cache keys
-        print(key)
-        
-        if key.startswith("universities_list_page_"):
-            print('delted universty_list')
-            cache.delete(key)
+    university = instance.collage.university
+    avg_rating = Review.objects.filter(collage__university=university).aggregate(Avg('rating'))['rating__avg']
+    
+    if avg_rating is None:
+        avg_rating = 0.0  # If no reviews exist, set rating to 0
+    
+    university.rating = round(avg_rating, 2)
+    university.save()
 
-        if key.startswith("country_"):
-            print('delted country')
-            cache.delete(key)
-
-
-
-
-# Connect the cache-clearing function to relevant models
-@receiver(post_save, sender=University)
-@receiver(post_delete, sender=University)
-@receiver(post_save, sender=Collage)
-@receiver(post_delete, sender=Collage)
-@receiver(post_save, sender=City)
-@receiver(post_delete, sender=City)
-@receiver(post_save, sender=Country)
-@receiver(post_delete, sender=Country)
-@receiver(post_save, sender=Major)
-@receiver(post_delete, sender=Major)
-def update_cache(sender, instance, **kwargs):
-    clear_university_cache()

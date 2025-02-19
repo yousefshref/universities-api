@@ -15,6 +15,11 @@ class CustomUserSerializer(serializers.ModelSerializer):
 class UniversitySerializer(serializers.ModelSerializer):
     city_name = serializers.SerializerMethodField(source="city.name", read_only=True)
     country_name = serializers.SerializerMethodField(source="country.name", read_only=True)
+    reviews_numbers = serializers.SerializerMethodField(read_only=True)
+
+    def get_reviews_numbers(self, obj):
+        collages = Collage.objects.filter(university=obj)
+        return Review.objects.filter(collage__in=collages).count()
 
     def get_city_name(self, obj):
         return obj.city.name
@@ -88,6 +93,7 @@ class CollageSerializer(serializers.ModelSerializer):
 
     def get_major_name(self, obj):
         return obj.major.name
+    
     class Meta:
         model = Collage
         fields = '__all__'
@@ -98,6 +104,7 @@ class ReviewSerializer(serializers.ModelSerializer):
 
     def get_user_name(self, obj):
         return obj.user.first_name
+
     class Meta:
         model = Review
         fields = '__all__'

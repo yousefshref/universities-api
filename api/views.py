@@ -169,13 +169,13 @@ class UniversityViewSet(viewsets.ModelViewSet):
         country_param = request.query_params.get('country', '')
         city_param = request.query_params.get('city', '')
         major_param = request.query_params.get('major', '')
-        page_number = request.query_params.get('page', 1)
+        # page_number = request.query_params.get('page', 1)
 
         # Build a cache key including filters
-        cache_key = (
-            f"universities_list_page_{page_number}_"
-            f"country_{country_param}_city_{city_param}_major_{major_param}"
-        )
+        # cache_key = (
+        #     f"universities_list_page_{page_number}_"
+        #     f"country_{country_param}_city_{city_param}_major_{major_param}"
+        # )
         # cached_data = cache.get(cache_key)
         # if cached_data:
         #     return Response(cached_data)
@@ -221,7 +221,7 @@ class UniversityViewSet(viewsets.ModelViewSet):
                 })
 
             paginated_response = self.get_paginated_response(grouped_results)
-            cache.set(cache_key, paginated_response.data, timeout=3600)  # Cache for 1 hour
+            # cache.set(cache_key, paginated_response.data, timeout=3600)  # Cache for 1 hour
             return paginated_response
 
         serializer = self.get_serializer(queryset, many=True)
